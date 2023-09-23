@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        .timer-container {
+            text-align: center;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        .timer-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 5px;
+        }
+        .timer-label {
+            font-size: 1rem;
+            color: #777;
+        }
+    </style>
+    <title>Timer</title>
+</head>
+<body>
+    <div class="container mt-5 mb-4">
+        <div class="row">
+            <div class="col">
+                <h1 class="text-center mb-4">Tyyyaaaa <span class="bi bi-heart-fill text-danger"></span></h1>
+                <p class="text-center text-secondary">waiting</p>
+                <div class="timer-container">
+                    <div class="timer-value" id="years">0</div>
+                    <div class="timer-label">Tahun</div>
+                </div>
+                <div class="timer-container">
+                    <div class="timer-value" id="days">0</div>
+                    <div class="timer-label">Hari</div>
+                </div>
+                <div class="timer-container">
+                    <div class="timer-value" id="hours">0</div>
+                    <div class="timer-label">Jam</div>
+                </div>
+                <div class="timer-container">
+                    <div class="timer-value" id="minutes">0</div>
+                    <div class="timer-label">Menit</div>
+                </div>
+                <div class="timer-container">
+                    <div class="timer-value" id="seconds">0</div>
+                    <div class="timer-label">Detik</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tanggal awal yang ditentukan (1 Februari 2022)
+        const startDate = new Date("February 1, 2022 00:00:00").getTime();
+
+        // Perbarui timer setiap detik
+        setInterval(function () {
+            const now = new Date().getTime(); // Waktu saat ini
+            const timeElapsed = now - startDate;
+
+            // Hitung tahun, hari, jam, menit, dan detik yang telah berlalu
+            const years = Math.floor(timeElapsed / (1000 * 60 * 60 * 24 * 365));
+            const days = Math.floor((timeElapsed % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeElapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeElapsed % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeElapsed % (1000 * 60)) / 1000);
+
+            // Perbarui tampilan timer
+            document.getElementById("years").innerText = years;
+            document.getElementById("days").innerText = days;
+            document.getElementById("hours").innerText = hours;
+            document.getElementById("minutes").innerText = minutes;
+            document.getElementById("seconds").innerText = seconds;
+        }, 1000);
+    </script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"></script>
+</body>
+  </html>
+                      
