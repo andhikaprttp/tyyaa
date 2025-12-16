@@ -1,88 +1,410 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <style>
-        .timer-container {
-            text-align: center;
-            padding: 20px;
-            background-color: #f8f9fa;
-            border-radius: 5px;
-        }
-        .timer-value {
-            font-size: 2rem;
-            font-weight: bold;
-            margin: 5px;
-        }
-        .timer-label {
-            font-size: 1rem;
-            color: #777;
-        }
-    </style>
-    <title>Tyyaaaa</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Andhika ❤ Diana — LDR Story</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:'Inter',system-ui,sans-serif;
+  background:#000;
+  color:#fff;scroll-behavior:smooth;
+  overflow-x:hidden;
+  line-height:1.6;
+}
+header{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  animation:cinematic 1.4s ease;
+  position:relative;
+}
+@keyframes cinematic{from{opacity:0;transform:translateY(30px)}to{opacity:1}}
+
+h1{font-size:clamp(2.2rem,5vw,3.2rem); letter-spacing:2px; line-height:1.2; animation: breathe 4s infinite; font-weight:300; font-family: 'Dancing Script', cursive;}
+@keyframes breathe{0%,100%{transform:scale(1);} 50%{transform:scale(1.02);}}
+.subtitle{color:#9ca3af; font-size:1.1rem; margin-bottom:1rem; font-weight:300; font-family: 'Dancing Script', cursive;}
+
+.timer{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:1rem;max-width:720px;width:100%;margin-top:2rem}
+.card{
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
+  border-radius:24px;padding:1.2rem;backdrop-filter:blur(12px);
+  transition:.4s; box-shadow:0 8px 32px rgba(0,0,0,0.4);
+}
+.card:hover{transform:translateY(-6px); box-shadow:0 12px 40px rgba(0,0,0,0.6);}
+.card strong{font-size:1.6rem}
+
+.clock{margin-top:2rem; font-size:1.2rem; color:#9ca3af; font-family: 'Courier New', monospace; text-align:center;}
+.clock span { color: #fff; font-weight: bold; }
+
+.timer{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:1rem;max-width:720px;width:100%;margin-top:2rem}
+.card{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:24px;padding:1.2rem;backdrop-filter:blur(8px);
+  transition:.4s; box-shadow:0 4px 20px rgba(0,0,0,0.3);
+}
+.card:hover{transform:translateY(-6px); box-shadow:0 8px 30px rgba(0,0,0,0.5);}
+.card strong{font-size:1.6rem}
+
+section{max-width:1100px;margin:0 auto;padding:4rem 1rem; position:relative;}
+#map{height:440px;border-radius:22px;box-shadow:0 20px 60px rgba(0,0,0,.8); transition:transform 0.1s; position:relative; z-index:10;}
+
+.distance{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2rem;margin-top:2rem}
+
+.timeline{position:relative;margin:0;padding-left:30px}
+.timeline::before{content:'';position:absolute;left:10px;top:0;bottom:0;width:2px;background:linear-gradient(#fff,transparent)}
+.t-item{margin-bottom:1.8rem;position:relative; padding:1rem; border-radius:10px; transition:background 0.5s;}
+.t-item:hover{background:rgba(255,255,255,0.1);}
+.t-item::before{content:'';position:absolute;left:-22px;top:4px;width:10px;height:10px;border-radius:50%;background:white; box-shadow:0 0 10px #fff;}
+.t-item span{color:#9ca3af;font-size:.9rem}
+.memory{display:none; margin-top:0.5rem; font-style:italic; color:#fff;}
+.t-item:hover .memory{display:block;}
+
+.timeline-gallery-grid{display:grid; grid-template-columns:1fr 1fr; gap:2rem;}
+.gallery{display:flex; justify-content:center;}
+.gallery-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:0.5rem;}
+.gallery-grid img{width:100%; border-radius:8px;}
+
+.jadwal-pesawat{margin-top:4rem;}
+.jadwal-pesawat .card{position:relative;}
+.train-animation{position:relative; height:100px; overflow:hidden; background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.1) 100%);}
+.train{position:absolute; top:50%; transform:translateY(-50%); animation:trainMove 8s linear infinite;}
+@keyframes trainMove{0%{left:-120px;}100%{left:calc(100% + 120px);}}
+
+.quote{text-align:center;font-style:italic;font-size:1.1rem;opacity:.85;animation:fadeQuote 4s infinite;}
+@keyframes fadeQuote{0%,100%{opacity:.3}50%{opacity:1}}
+
+.quote-section{position:relative; overflow:hidden; height:500px; display:flex; align-items:center; justify-content:center;}
+.dynamic-sky{position:absolute; inset:0; background:linear-gradient(#e0e0e0, #f0f0f0); transition:background 2s;}
+.sun{position:absolute; bottom:50px; left:20%; width:60px; height:60px; background:#fff; border-radius:50%; animation:sunMove 10s infinite linear;}
+@keyframes sunMove{0%{left:20%; bottom:50px;} 25%{left:50%; bottom:100px;} 50%{left:80%; bottom:150px;} 75%{left:50%; bottom:100px;} 100%{left:20%; bottom:50px;}}
+.cloud{position:absolute; width:100px; height:60px; background:#fff; border-radius:50px; opacity:0.8; animation:cloudMove 15s infinite linear;}
+.cloud1{top:20%; animation-delay:0s;}
+.cloud2{top:40%; animation-delay:5s;}
+.cloud3{top:60%; animation-delay:10s;}
+@keyframes cloudMove{0%{left:-100px;} 100%{left:100vw;}}
+@keyframes fall{0%{top:-10px;} 100%{top:100%;}}
+.rain{position:absolute; inset:0; pointer-events:none; display:none;}
+.rain-drop{position:absolute; width:2px; height:10px; background:#fff; animation:fall 1s infinite linear;}
+
+.content-grid{display:grid; grid-template-columns:1fr 1fr 1fr; gap:2rem; position:relative; z-index:1; max-width:900px; width:100%; margin-top:4rem;}
+.quote-stack{display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; perspective:1000px; max-width:300px;}
+.progress-card, .calendar-card{display:flex; justify-content:center;}
+.progress-bar{width:100%; height:20px; background:rgba(255,255,255,0.2); border-radius:10px; overflow:hidden; margin:1rem 0;}
+.progress-fill{height:100%; background:#fff; width:0%; transition:width 1s;}
+.calendar{font-family:'Courier New', monospace; text-align:center; font-size:0.8rem;}
+.calendar-grid{display:grid; grid-template-columns:repeat(7,1fr); gap:0.2rem;}
+.calendar-day{font-weight:bold; font-size:0.7rem; padding:0.3rem; border-radius:0;}
+
+.heart-rate-graph{display:flex; align-items:end; justify-content:space-between; height:100px; margin:1rem 0;}
+.bar{width:8px; background:#fff; border-radius:4px 4px 0 0; animation:beat 2s infinite ease-in-out;}
+@keyframes beat{0%,100%{height:20px;} 50%{height:60px;}}
+.flip-card{width:120px; height:120px; position:relative;}
+.flip-card-inner{ position:relative; width:100%; height:100%; text-align:center; transition:transform 0.8s; transform-style:preserve-3d;}
+.flip-card:hover .flip-card-inner, .flipped{transform:rotateY(180deg);}
+.flip-card-front, .flip-card-back{position:absolute; width:100%; height:100%; -webkit-backface-visibility:hidden; backface-visibility:hidden; border-radius:24px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); display:flex; align-items:center; justify-content:center; font-size:2rem; backdrop-filter:blur(12px); box-shadow:0 8px 32px rgba(0,0,0,0.4);}
+.flip-card-back{transform:rotateY(180deg); font-size:0.9rem; padding:0.5rem;}
+
+.plane{position:absolute; animation:blink 1.2s infinite;}
+@keyframes blink{0%,100%{opacity:.4}50%{opacity:1}}
+
+#story{margin-top:4rem}
+.story-step{margin:3rem 0;opacity:0;transform:translateY(40px);transition:1s; animation:stagger 0.5s ease forwards;}
+@keyframes stagger{to{opacity:1; transform:translateY(0);}}
+.story-step:nth-child(1){animation-delay:0.5s;}
+.story-step:nth-child(2){animation-delay:1s;}
+.story-step:nth-child(3){animation-delay:1.5s;}
+.story-step:nth-child(4){animation-delay:2s;}
+.story-step.active{opacity:1;transform:translateY(0)}
+
+.data-pesawat {
+    background-color: #9ca3af;
+    border-radius: 50px;
+}
+
+#daynight .card{overflow:hidden; position:relative;}
+#sky{position:absolute;inset:0; transition:background 2s ease;}
+#sun{position:absolute;bottom:30px;left:10%;width:60px;height:60px;border-radius:50%;background:#f0f0f0; transition:opacity 2s, transform 2s;}
+#moon{position:absolute;top:40px;right:15%;width:50px;height:50px;border-radius:50%;background:#e0e0e0;opacity:0; transition:opacity 2s, transform 2s;}
+
+footer{text-align:center;color:#9ca3af;padding:2rem;}
+</style>
 </head>
 <body>
-    <audio autoplay="true">
-    <source src="song.mp3" type="audio/mp3">
-    </audio>
-    <div class="container mt-5 mb-4">
-        <div class="row">
-            <div class="col">
-                <h1 class="text-center mb-4">Tyyyaaaa <span class="bi bi-heart-fill text-danger"></span></h1>
-                <p class="text-center text-secondary">waiting</p>
-                <div class="timer-container">
-                    <div class="timer-value" id="years">0</div>
-                    <div class="timer-label">Tahun</div>
-                </div>
-                <div class="timer-container">
-                    <div class="timer-value" id="days">0</div>
-                    <div class="timer-label">Hari</div>
-                </div>
-                <div class="timer-container">
-                    <div class="timer-value" id="hours">0</div>
-                    <div class="timer-label">Jam</div>
-                </div>
-                <div class="timer-container">
-                    <div class="timer-value" id="minutes">0</div>
-                    <div class="timer-label">Menit</div>
-                </div>
-                <div class="timer-container">
-                    <div class="timer-value" id="seconds">0</div>
-                    <div class="timer-label">Detik</div>
-                </div>
-            </div>
-        </div>
+
+<header>
+  <h1>Andhika ❤ Diana</h1>
+  <p class="subtitle">"Puncak rasa rindu seseorang adalah ketika tak lagi bertemu, tak lagi bertegur sapa, tetapi di dalam hati saling mendoakan."</p>
+  
+  <div class="timer">
+    <div class="card"><strong id="years">0</strong><div>Tahun</div></div>
+    <div class="card"><strong id="days">0</strong><div>Hari</div></div>
+    <div class="card"><strong id="hours">0</strong><div>Jam</div></div>
+    <div class="card"><strong id="minutes">0</strong><div>Menit</div></div>
+    <div class="card"><strong id="seconds">0</strong><div>Detik</div></div>
+  </div>
+  <div class="card clock">Waktu Sekarang: <span id="currentTime"></span></div>
+</header>
+
+<section>
+  <div class="distance">
+    <div class="card"><h4>Andhika</h4><p>Surabaya ↔ Jakarta</p><strong id="d-aj">0 km</strong></div>
+    <div class="card"><h4>Diana</h4><p>Medan ↔ Pekanbaru</p><strong id="d-mp">0 km</strong></div>
+    <div class="card"><h4>Kita</h4><p>Medan ↔ Surabaya</p><strong id="d-main">0 km</strong></div>
+  </div>
+
+  <h2 style="text-align:center">Peta Perjalanan Kita</h2>
+  <p style="text-align:center;color:#9ca3af">Medan – Pekanbaru – Jakarta – Surabaya</p>
+  <div id="map"></div>
+
+  <div class="timeline-gallery-grid" style="margin-top:3rem;">
+    <div class="timeline">
+      <div class="t-item"><strong>Medan</strong><br><span>KNO – Diana</span><div class="memory">Kota pertama kita bertemu, di bawah langit Medan yang hangat.</div></div>
+      <div class="t-item"><strong>Pekanbaru</strong><br><span>PKU</span><div class="memory">Perjalanan singkat, tapi kenangan panjang di tepi sungai.</div></div>
+      <div class="t-item"><strong>Jakarta</strong><br><span>CGK</span><div class="memory">Kota besar yang menyaksikan janji kita.</div></div>
+      <div class="t-item"><strong>Surabaya</strong><br><span>SUB – Andhika</span><div class="memory">Tempat aku menunggu, dengan harapan bertemu lagi.</div></div>
     </div>
+    <div class="gallery">
+      <div class="card">
+        <h3>Galeri Kota</h3>
+        <div class="gallery-grid">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Great_mosque_in_Medan_cropped.jpg" alt="Medan">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Masjid_Raya_Pekanbaru_%284%29.jpg/2560px-Masjid_Raya_Pekanbaru_%284%29.jpg" alt="Pekanbaru">
+          <img src="https://upload.wikimedia.org/wikipedia/id/2/25/Masjid_Istiqlal_-_Panoramio.jpg" alt="Jakarta">
+          <img src="https://upload.wikimedia.org/wikipedia/id/thumb/9/95/Masjid_Nasional_Al-Akbar_Surabaya_2016.jpg/330px-Masjid_Nasional_Al-Akbar_Surabaya_2016.jpg" alt="Surabaya">
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <script>
-        // Tanggal awal yang ditentukan (1 Februari 2022)
-        const startDate = new Date("February 1, 2022 00:00:00").getTime();
+  <div class="jadwal-pesawat">
+    <div class="card">
+      <h3>Stasiun Rindu</h3>
+      <div class="train-animation">
+        <div class="train">
+          <svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Locomotive -->
+            <rect x="0" y="10" width="30" height="20" fill="#fff"/>
+            <circle cx="5" cy="35" r="5" fill="#fff"/>
+            <circle cx="25" cy="35" r="5" fill="#fff"/>
+            <!-- Chimney -->
+            <rect x="10" y="0" width="5" height="10" fill="#fff"/>
+            <!-- Carriage 1 -->
+            <rect x="35" y="10" width="25" height="20" fill="#fff"/>
+            <circle cx="40" cy="35" r="5" fill="#fff"/>
+            <circle cx="55" cy="35" r="5" fill="#fff"/>
+            <!-- Carriage 2 -->
+            <rect x="65" y="10" width="25" height="20" fill="#fff"/>
+            <circle cx="70" cy="35" r="5" fill="#fff"/>
+            <circle cx="85" cy="35" r="5" fill="#fff"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        // Perbarui timer setiap detik
-        setInterval(function () {
-            const now = new Date().getTime(); // Waktu saat ini
-            const timeElapsed = now - startDate;
+    <div class="content-grid">
+      <div class="quote-stack">
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#fff"/>
+              </svg>
+            </div>
+            <div class="flip-card-back">
+              <p>“Love looks not with the eyes, but with the mind.”</p>
+            </div>
+          </div>
+        </div>
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#fff"/>
+              </svg>
+            </div>
+            <div class="flip-card-back">
+              <p>"Every moment with you is special."</p>
+            </div>
+          </div>
+        </div>
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" fill="#fff"/>
+              </svg>
+            </div>
+            <div class="flip-card-back">
+              <p>seasons come and go </p>
+            </div>
+          </div>
+        </div>
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#fff"/>
+              </svg>
+            </div>
+            <div class="flip-card-back">
+              <p>I love you, Tia</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="progress-card">
+        <div class="card">
+          <h3>Heart Rate Cinta</h3>
+          <div class="heart-rate-graph">
+            <div class="bar" style="animation-delay:0s;"></div>
+            <div class="bar" style="animation-delay:0.1s;"></div>
+            <div class="bar" style="animation-delay:0.2s;"></div>
+            <div class="bar" style="animation-delay:0.3s;"></div>
+            <div class="bar" style="animation-delay:0.4s;"></div>
+            <div class="bar" style="animation-delay:0.5s;"></div>
+            <div class="bar" style="animation-delay:0.6s;"></div>
+            <div class="bar" style="animation-delay:0.7s;"></div>
+            <div class="bar" style="animation-delay:0.8s;"></div>
+            <div class="bar" style="animation-delay:0.9s;"></div>
+          </div>
+          <p id="heartRateText">1103</p>
+        </div>
+      </div>
+      <div class="calendar-card">
+        <div class="card">
+          <h3>Kalender</h3>
+          <div id="calendar" class="calendar">
+            <div class="calendar-grid">
+              <div class="calendar-day">1</div><div class="calendar-day">2</div><div class="calendar-day">3</div><div class="calendar-day">4</div><div class="calendar-day">5</div><div class="calendar-day">6</div><div class="calendar-day">7</div>
+              <div class="calendar-day">8</div><div class="calendar-day">9</div><div class="calendar-day">10</div><div class="calendar-day">11</div><div class="calendar-day">12</div><div class="calendar-day">13</div><div class="calendar-day">14</div>
+              <div class="calendar-day">15</div><div class="calendar-day">16</div><div class="calendar-day">17</div><div class="calendar-day">18</div><div class="calendar-day">19</div><div class="calendar-day">20</div><div class="calendar-day">21</div>
+              <div class="calendar-day">22</div><div class="calendar-day">23</div><div class="calendar-day">24</div><div class="calendar-day">25</div><div class="calendar-day">26</div><div class="calendar-day">27</div><div class="calendar-day">28</div>
+              <div class="calendar-day">29</div><div class="calendar-day">30</div><div class="calendar-day">31</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-            // Hitung tahun, hari, jam, menit, dan detik yang telah berlalu
-            const years = Math.floor(timeElapsed / (1000 * 60 * 60 * 24 * 365));
-            const days = Math.floor((timeElapsed % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((timeElapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((timeElapsed % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeElapsed % (1000 * 60)) / 1000);
 
-            // Perbarui tampilan timer
-            document.getElementById("years").innerText = years;
-            document.getElementById("days").innerText = days;
-            document.getElementById("hours").innerText = hours;
-            document.getElementById("minutes").innerText = minutes;
-            document.getElementById("seconds").innerText = seconds;
-        }, 1000);
-    </script>
+</section>
 
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"></script>
+
+<footer>"Kegagalan hanya terjadi bila kita menyerah."</footer>
+
+<script>
+/******** SAFE INITIAL STATE ********/
+let isDay = true; // FIX: defined BEFORE usage
+
+const route = [
+  [3.5952,98.6722],
+  [0.5071,101.4478],
+  [-6.2088,106.8456],
+  [-7.2575,112.7521]
+];
+
+function validPoint(p){return Array.isArray(p)&&p.length===2&&!isNaN(p[0])&&!isNaN(p[1]);}
+
+function dist(a,b){
+ if(!validPoint(a)||!validPoint(b)) return 0; // TEST CASE: invalid coord
+ const R=6371;
+ const la1=a[0]*Math.PI/180, la2=b[0]*Math.PI/180;
+ const dLa=la2-la1, dLo=(b[1]-a[1])*Math.PI/180;
+ const x=Math.sin(dLa/2)**2+Math.cos(la1)*Math.cos(la2)*Math.sin(dLo/2)**2;
+ return Math.round(2*R*Math.atan2(Math.sqrt(x),Math.sqrt(1-x)));
+}
+
+/******** TIMER ********/
+const start=new Date('2022-02-01').getTime();
+setInterval(()=>{
+ const d=Date.now()-start;
+ years.textContent=Math.floor(d/31536000000);
+ days.textContent=Math.floor(d%31536000000/86400000);
+ hours.textContent=Math.floor(d%86400000/3600000);
+ minutes.textContent=Math.floor(d%3600000/60000);
+ seconds.textContent=Math.floor(d%60000/1000);
+},1000);
+
+/******** CLOCK ********/
+function updateClock(){
+ const now = new Date();
+ const options = { timeZone: 'Asia/Jakarta', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
+ const timeString = now.toLocaleTimeString('en-US', options);
+ const dateString = now.toLocaleDateString('id-ID', { timeZone: 'Asia/Jakarta' });
+ currentTime.textContent = `${dateString} ${timeString} WIB`;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+/******** DISTANCE TEST CASES ********/
+document.getElementById('d-aj').textContent='782 km'; // Surabaya to Jakarta by road
+document.getElementById('d-mp').textContent='638 km'; // Medan to Pekanbaru by road
+document.getElementById('d-main').textContent='2643 km'; // Medan to Surabaya by road
+
+/******** MAP ********/
+const map=L.map('map',{zoomControl:false,attributionControl:false, dragging:false, scrollWheelZoom:false, doubleClickZoom:false, boxZoom:false, keyboard:false}).setView([-2,118],5);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png').addTo(map);
+L.polyline(route,{color:'white',dashArray:'6 6'}).addTo(map);
+route.forEach(p=>{if(validPoint(p))L.circleMarker(p,{radius:6,color:'#FFFF00',fillColor:'#FFFF00',fillOpacity:1, weight:2}).addTo(map)});
+
+const planeIcon=L.divIcon({html:'<div class="plane"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" fill="#fff"/></svg></div>',iconSize:[24,24]});
+const plane=L.marker(route[0],{icon:planeIcon}).addTo(map);
+
+let t=0,dir=1;
+setInterval(()=>{
+ t+=0.01*dir;
+ if(t>=route.length-1||t<=0)dir*=-1;
+ const i=Math.floor(t);
+ if(!route[i]||!route[i+1])return; // TEST CASE
+ const f=t-i;
+ plane.setLatLng([
+  route[i][0]+(route[i+1][0]-route[i][0])*f,
+  route[i][1]+(route[i+1][1]-route[i][1])*f
+ ]);
+},40);
+
+/******** QUOTES ********/
+const quotes=['LOVE U','Medan dan Surabaya terhubung doa','Langit sama, rindu sama'];
+let qi=0;
+setInterval(()=>{quote.textContent='"'+quotes[++qi%quotes.length]+'"';},4000);
+
+/******** FLIP CARDS ********/
+document.querySelectorAll('.flip-card').forEach(card => {
+ card.addEventListener('click', () => {
+  card.querySelector('.flip-card-inner').classList.toggle('flipped');
+ });
+});
+
+/******** PROGRESS BAR ********/
+function updateProgress(){
+ const bpm = 60 + Math.sin(Date.now() / 1000) * 20 + 60; // Simulate 60-120 BPM
+ heartRateText.textContent = Math.floor(bpm) + ' BPM - Cinta yang stabil';
+}
+setInterval(updateProgress, 1000);
+updateProgress();
+
+
+/******** PARALLAX ********/
+window.addEventListener('scroll', () => {
+ const scrolled = window.pageYOffset;
+ if(scrolled < window.innerHeight){
+  document.querySelector('header').style.transform = `translateY(${scrolled * 0.3}px)`;
+ }
+ document.getElementById('map').style.transform = `translateY(${scrolled * 0.05}px)`;
+});
+
+</script>
 </body>
-  </html>
-                      
+</html>
