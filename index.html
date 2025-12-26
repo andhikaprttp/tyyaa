@@ -377,25 +377,28 @@ setInterval(()=>{
  ]);
 },40);
 
-/******** QUOTES ********/
+/******** QUOTES
 const quotes=['LOVE U','Medan dan Surabaya terhubung doa','Langit sama, rindu sama'];
 let qi=0;
 setInterval(()=>{quote.textContent='"'+quotes[++qi%quotes.length]+'"';},4000);
-
-/******** FLIP CARDS ********/
+ ********/
+  
+/******** FLIP CARDS 
 document.querySelectorAll('.flip-card').forEach(card => {
  card.addEventListener('click', () => {
   card.querySelector('.flip-card-inner').classList.toggle('flipped');
  });
 });
+********/
 
-/******** PROGRESS BAR ********/
+/******** PROGRESS BAR 
 function updateProgress(){
  const bpm = 60 + Math.sin(Date.now() / 1000) * 20 + 60; // Simulate 60-120 BPM
  heartRateText.textContent = Math.floor(bpm) + ' BPM - Cinta yang stabil';
 }
 setInterval(updateProgress, 1000);
 updateProgress();
+  ****/
 
 
 /******** PARALLAX ********/
